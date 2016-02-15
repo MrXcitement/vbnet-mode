@@ -1,16 +1,26 @@
-;;; vbnet-mode.el  --- A mode for editing Visual Basic .NET programs.
-;;
-;; Authors    : Fred White <fwhite@alum.mit.edu>
-;;            : Dave Love <d.love@dl.ac.uk>
-;;            : Kevin Whitefoot <kevin.whitefoot@nopow.abb.no>
-;;            : T.K.Anderson
-;;            : Dino Chiesa <dpchiesa@hotmail.com>
-;; Created    : April 1996
-;; Modified   : May 2011
-;; Version    : 1.6
-;; Keywords   : languages, basic, VB, VBNET
-;; X-URL      : http://code.google.com/p/vbnetmode/
-;; Last-saved : <2011-May-02 12:48:13>
+;;; vbnet-mode.el --- A mode for editing Visual Basic .NET programs.
+
+;; Author: Fred White <fwhite@alum.mit.edu>
+;;         Dave Love <d.love@dl.ac.uk>
+;;         Kevin Whitefoot <kevin.whitefoot@nopow.abb.no>
+;;         T.K.Anderson
+;;         Dino Chiesa <dbchiesa@hotmail.com>
+;;         Mike Barker <mike@thebarkers.com>
+;; Created.: April 1996
+;; Modified: February 2016
+;; Version.: 1.7
+;; Keywords: visual-basic
+;; URL: https://github.com/mrxcitement/vbnet-mode
+
+;;; Commentary:
+
+;; Purpose of this package: This is a mode for editing programs written
+;;   in Visual Basic .NET (VB.NET).  This mode features automatic
+;;   indentation of VB.NET syntax; font locking; automatic keyword
+;;   capitalization; integration with compile.el, flymake.el, and
+;;   imenu.el; built-in snippets for ya-snippet.el; and some minor
+;;   convenience functions.
+
 
 ;; Copyright (C) 1996 Fred White <fwhite@alum.mit.edu>
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
@@ -38,15 +48,6 @@
 ;; published by the Free Software  Foundation; either version 2 of the
 ;; License, or (at your option) any later version.
 
-
-;;; Commentary:
-
-;; Purpose of this package: This is a mode for editing programs written
-;;   in Visual Basic .NET (VB.NET).  This mode features automatic
-;;   indentation of VB.NET syntax; font locking; automatic keyword
-;;   capitalization; integration with compile.el, flymake.el, and
-;;   imenu.el; built-in snippets for ya-snippet.el; and some minor
-;;   convenience functions.
 
 ;; Installation instructions
 ;; --------------------------------
@@ -1263,15 +1264,15 @@ See `imenu-create-index-function' for more information."
      )))
 
 
-
-(defun vbnet-regexp (symbol)
-  "Retrieves a regexp from the `vbnet-regexp-alist' corresponding
-to the given symbol. There's probably a nifty way to do this with
-a fast hash table, but an alist works fine for this purpose. It's
-fast enough.
-"
-  (let ((elt (assoc symbol vbnet-regexp-alist)))
-    (if elt (cadr elt) nil)))
+(eval-and-compile
+  (defun vbnet-regexp (symbol)
+    "Retrieves a regexp from the `vbnet-regexp-alist' corresponding
+  to the given symbol. There's probably a nifty way to do this with
+  a fast hash table, but an alist works fine for this purpose. It's
+  fast enough.
+  "
+    (let ((elt (assoc symbol vbnet-regexp-alist)))
+      (if elt (cadr elt) nil))))
 
 
 ;; This is some approximation of the set of reserved words in Visual Basic.
@@ -2989,7 +2990,8 @@ ctrl-e."
 ;; ========================================================================
 ;; finally, the mode
 
-(defun vbnet-mode ()
+;; (defun vbnet-mode ()
+(define-derived-mode vbnet-mode prog-mode
   "A mode for editing Microsoft Visual Basic .NET programs.
 This is version 1.5 of the mode.
 
@@ -3115,10 +3117,7 @@ Here's a summary of the key bindings:
     '(progn
        (if vbnet-want-flymake-fixup
            (vbnet-flymake-install))))
-
-
   )
-
 
 (provide 'vbnet-mode)
 
